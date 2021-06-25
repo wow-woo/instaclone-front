@@ -1,9 +1,15 @@
 import React from "react";
+import { setLogin } from "../apolloClient";
 
-interface HomeProps {
-  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-}
+interface HomeProps {}
 
-export const Home: React.FC<HomeProps> = ({ setLoggedIn }) => {
-  return <h1>Home</h1>;
+export const Home: React.FC<HomeProps> = ({}) => {
+  return (
+    <>
+      <header>
+        <h1>Home</h1>
+        <button onClick={() => setLogin(false)}>log out</button>
+      </header>
+    </>
+  );
 };

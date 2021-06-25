@@ -25,7 +25,8 @@
 - they are separate from caches
 - import {makeVar} from '@apollo/client'
 - const what = makeVar(false);
-  you just created reactive variable, in order to retrieve, call like what()
+  'what' is like setState
+  you just created reactive variable, in order to retrieve, call like what(true)
 
 ### useReactiveVar
 
