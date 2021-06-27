@@ -1,19 +1,21 @@
-import { Link, useLocation } from "react-router-dom";
 import React from "react";
 import { setLogin, setMode } from "../apolloClient";
 import styled from "styled-components";
 import { useReactiveVar } from "@apollo/client";
 import {
-  AppdownDiv,
-  Btn,
+  BtnFBLoginBg,
+  BtnLogin,
   Divider,
-  Footer,
   Inp,
   WhiteBoxDiv,
+  Footer,
+  AppdownDiv,
 } from "../styledComponent/styled";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import routes from "../consts/routes";
 import { PageLayout } from "../pages/PageLayout";
-import { LoginInps } from "../components/LoginInps";
+import { SignupInps } from "../components/SignupInps";
 
 const Select = styled.div`
   position: relative;
@@ -53,7 +55,7 @@ const BottomBoxDiv = styled(WhiteBoxDiv)`
   border: 1px solid #ebe5e5;
   width: 350px;
   margin-top: 13px;
-  padding: 15px 0;
+  padding: 25px 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -87,26 +89,27 @@ const Card = styled.section`
   width: 350px;
 
   p {
+    font-family: "Segoe UI, Roboto";
     text-align: center;
     padding: 20px 0;
     font-weight: 300;
   }
 `;
 
-interface LoginProps {}
+interface SignupProps {}
 
-export const Login: React.FC<LoginProps> = () => {
+export const Signup: React.FC<SignupProps> = ({}) => {
   const currentMode = useReactiveVar(setMode);
 
   return (
-    <PageLayout title='Login | Instagram'>
+    <PageLayout title='Sign up | Instagram'>
       <Container>
         <Main>
           <Card>
-            <LoginInps />
+            <SignupInps />
             <BottomBoxDiv>
               <div>
-                Don't have an account? <Link to={routes.signup}>Sign up</Link>
+                Have an account? <Link to={routes.login}>Log in</Link>
               </div>
             </BottomBoxDiv>
 
