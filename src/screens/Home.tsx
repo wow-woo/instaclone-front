@@ -8,6 +8,7 @@ export const Home: React.FC<HomeProps> = ({}) => {
     <>
       <header>
         <h1>Home</h1>
+        <h3>Welcome, baby</h3>
         <button onClick={() => setLogin(false)}>log out</button>
       </header>
     </>

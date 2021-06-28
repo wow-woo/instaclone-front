@@ -1,3 +1,4 @@
+import { gql, useMutation, useReactiveVar } from "@apollo/client";
 import React from "react";
 import { DeepMap, FieldError, useForm } from "react-hook-form";
 import styled from "styled-components";
@@ -10,6 +11,7 @@ import {
   Divider,
   Btn,
 } from "../styledComponent/styled";
+import { ErrorField } from "./ErrorField";
 
 const TopBoxDiv = styled(WhiteBoxDiv)`
   border: 1px solid #ebe5e5;
@@ -58,25 +60,60 @@ interface IFormInp {
   mobileEmail: string;
   password: string;
 }
-
-const validOnSubmit = (inp: IFormInp) => {
-  console.log("good ", inp);
-  return setLogin(true);
-};
-
 const invalidOnSubmit = (err: DeepMap<IFormInp, FieldError>) => {
   console.log("bad ", err);
 };
 
 interface LoginInpsProps {}
 
+const LOGIN_MUTATION = gql`
+  mutation login($userName: String!, $password: String!) {
+    login(userName: $userName, password: $password) {
+      ok
+      token
+      error
+    }
+  }
+`;
+
+const onError = (e: any) => {
+  console.log("eee ", e);
+};
 export const LoginInps: React.FC<LoginInpsProps> = ({}) => {
   const {
     register,
     watch,
-    formState: { errors },
+    formState: { errors, isValid },
     handleSubmit,
-  } = useForm<IFormInp>();
+    getValues,
+    setError,
+  } = useForm<IFormInp>({
+    mode: "onChange",
+  });
+
+  const onCompleted = (data: any) => {
+    console.log("get a response", data);
+    const {
+      login: { ok, error, token },
+    } = data;
+
+    token && setLogin(token);
+  };
+  const [login, { loading: loginLoading, data }] = useMutation(LOGIN_MUTATION, {
+    onCompleted,
+    onError,
+  });
+
+  const validOnSubmit = (inp: IFormInp) => {
+    console.log("good ", inp);
+    const { mobileEmail, password } = inp;
+
+    login({
+      variables: { userName: mobileEmail, password },
+    }).catch((e) => console.log("ee ", e));
+
+    // return setLogin(true);
+  };
 
   return (
     <TopBoxDiv>
@@ -87,18 +124,33 @@ export const LoginInps: React.FC<LoginInpsProps> = ({}) => {
         alt='instagram logo'
         title='instagram logo'
       />
-      <form onSubmit={handleSubmit(validOnSubmit, invalidOnSubmit)}>
+      <form onSubmit={handleSubmit(validOnSubmit)}>
         <Inp
           {...register(inputInfo.mobileemail, inputInfo.mobileeamilConstraints)}
-          type='email'
+          type='text'
           placeholder='Phone number, username, or email'
+          hasError={!!errors[inputInfo.mobileemail]?.message}
         />
+        {errors[inputInfo.mobileemail] && (
+          <ErrorField
+            error={errors && errors[inputInfo.mobileemail]?.message}
+          />
+        )}
         <Inp
           {...register(inputInfo.password, inputInfo.passwordConstraints)}
           type='password'
           placeholder='Password'
+          hasError={!!errors[inputInfo.password]?.message}
         />
-        <InpSubmit type='submit' value='Log in' />
+        {errors[inputInfo.password] && (
+          <ErrorField error={errors && errors[inputInfo.password]?.message} />
+        )}
+        <InpSubmit
+          type='submit'
+          value={loginLoading ? "Loading..." : "Log in"}
+          disabled={loginLoading}
+        />
+        {data?.login?.error && <ErrorField error={data?.login?.error} />}
         <Divider>
           <div></div>
           <span>OR</span>

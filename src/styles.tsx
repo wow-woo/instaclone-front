@@ -7,6 +7,7 @@ export const lightMode: DefaultTheme = {
   bgColor: "lightgray",
   secondaryColor: "#b2dffc",
   primaryColor: "#0095F6",
+  errColor: "orange",
 };
 
 export const darkMode: DefaultTheme = {
@@ -14,6 +15,7 @@ export const darkMode: DefaultTheme = {
   bgColor: "#2c2c",
   secondaryColor: "#b2dffc",
   primaryColor: "#0095F6",
+  errColor: "orange",
 };
 
 export const GlobalStyles = createGlobalStyle`

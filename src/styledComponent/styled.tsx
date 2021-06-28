@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { DefaultTheme, StyledComponent } from "styled-components";
 
 export const InpSubmit = styled.input`
   all: unset;
@@ -6,20 +6,24 @@ export const InpSubmit = styled.input`
   text-align: center;
   font-weight: bold;
   border-radius: 3px;
-
+  filter: ${(props) => (props.disabled ? "saturate(0)" : "saturate(50%)")};
   background-color: #b2dffc;
   color: #fff;
   padding: 7px 0;
   border-radius: 3px;
   margin-top: 5px;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? "none" : "pointer")};
 
   &:first-of-type:hover {
     background-color: #9cccec;
   }
 `;
 
-export const Inp = styled.input`
+interface IInp {
+  hasError?: boolean;
+}
+
+export const Inp = styled.input<IInp>`
   all: unset;
   display: block;
   width: 100%;
@@ -28,7 +32,9 @@ export const Inp = styled.input`
   padding: 10px;
   margin-bottom: 5px;
   box-sizing: border-box;
-  border: 1px solid #ebe5e5;
+  border-width: ${(props) => (props.hasError ? "2px" : "1px")};
+  border-style: solid;
+  border-color: ${(props) => (props.hasError ? "tomato" : "#ebe5e5")};
   border-radius: 3px;
   background-color: #fafafa;
 `;

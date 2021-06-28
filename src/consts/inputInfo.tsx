@@ -1,7 +1,7 @@
 interface IConstraint {
   required: boolean;
-  minLength: number;
-  maxLength: number;
+  minLength: number | { value: number; message: string };
+  maxLength: number | { value: number; message: string };
 }
 
 interface IInfo {
@@ -20,10 +20,26 @@ const info: IInfo = {
   fullname: "fullName",
   username: "userName",
   password: "password",
-  mobileeamilConstraints: { required: true, minLength: 7, maxLength: 25 },
-  fullnameConstraints: { required: true, minLength: 2, maxLength: 25 },
-  usernameConstraints: { required: true, minLength: 2, maxLength: 25 },
-  passwordConstraints: { required: true, minLength: 4, maxLength: 25 },
+  mobileeamilConstraints: {
+    required: true,
+    minLength: { value: 5, message: "too short" },
+    maxLength: { value: 25, message: "too long" },
+  },
+  fullnameConstraints: {
+    required: true,
+    minLength: { value: 3, message: "too short" },
+    maxLength: { value: 25, message: "too long" },
+  },
+  usernameConstraints: {
+    required: true,
+    minLength: { value: 3, message: "too short" },
+    maxLength: { value: 25, message: "too long" },
+  },
+  passwordConstraints: {
+    required: true,
+    minLength: { value: 3, message: "too short" },
+    maxLength: { value: 25, message: "too long" },
+  },
 };
 
 export default info;

@@ -1,5 +1,5 @@
-import { useReactiveVar } from "@apollo/client";
-import { setLogin, setMode } from "./apolloClient";
+import { ApolloProvider, useReactiveVar } from "@apollo/client";
+import { Client, setLogin, setMode } from "./apolloClient";
 import React, { useState } from "react";
 import {
   Redirect,
@@ -23,20 +23,22 @@ function App() {
   const colorMode = useReactiveVar(setMode);
 
   return (
-    <HelmetProvider>
-      <ThemeProvider theme={colorMode ? darkMode : lightMode}>
-        <GlobalStyles />
-        <Router>
-          <Switch>
-            <Route path='/' exact component={loggedIn ? Home : Login}></Route>
-            <Route path={routes.signup} exact>
-              {loggedIn ? <Redirect to='/notice' /> : <Signup />}
-            </Route>
-            <Route component={NotFound} />
-          </Switch>
-        </Router>
-      </ThemeProvider>
-    </HelmetProvider>
+    <ApolloProvider client={Client}>
+      <HelmetProvider>
+        <ThemeProvider theme={colorMode ? darkMode : lightMode}>
+          <GlobalStyles />
+          <Router>
+            <Switch>
+              <Route path='/' exact component={loggedIn ? Home : Login}></Route>
+              <Route path={routes.signup} exact>
+                {loggedIn ? <Redirect to='/notice' /> : <Signup />}
+              </Route>
+              <Route component={NotFound} />
+            </Switch>
+          </Router>
+        </ThemeProvider>
+      </HelmetProvider>
+    </ApolloProvider>
   );
 }
 
